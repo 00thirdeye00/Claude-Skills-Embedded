@@ -1,0 +1,10 @@
+{
+  "name": "stm32",
+  "version": "0.2.0",
+  "description": "STM32 firmware development skills: debugging, design, code review, driver bring-up, low power, bootloaders/OTA, release checks, ten peripheral skills, and FreeRTOS/Zephyr integration across STM32 families.",
+  "author": { "name": "Guru Mehar Rachaputi" },
+  "homepage": "https://github.com/00thirdeye00/Claude-Skills-Embedded",
+  "repository": "https://github.com/00thirdeye00/Claude-Skills-Embedded",
+  "license": "MIT",
+  "keywords": ["stm32", "embedded", "firmware", "arm", "cortex-m", "freertos", "zephyr", "hal", "debugging", "peripherals"]
+}
