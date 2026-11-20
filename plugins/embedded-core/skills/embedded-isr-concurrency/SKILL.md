@@ -1,18 +1,13 @@
 ---
 name: embedded-isr-concurrency
-description: Rules and patterns for interrupt service routines and shared data in bare-metal and RTOS firmware on any MCU. Use when writing or reviewing an ISR, sharing data between an ISR and main loop or task, deciding between volatile, critical sections, atomics, and lock-free buffers, handling race conditions, or estimating interrupt latency. Trigger with "is this ISR safe", "race condition", "volatile vs atomic", "shared variable between interrupt and task", "ring buffer from ISR", "critical section", "interrupt latency".
+description: Review or design ISR handling and shared data (volatile, critical sections, ring buffers, latency) for any MCU.
 argument-hint: "<code, design question, or symptom involving interrupts and shared data>"
+disable-model-invocation: true
 ---
 
 # /embedded-core:embedded-isr-concurrency
 
 Design or review interrupt handling and shared-data access so it is correct, bounded in time, and free of races.
-
-## Usage
-
-```
-/embedded-core:embedded-isr-concurrency $ARGUMENTS
-```
 
 If no code or design is given, ask what the ISR does, what data it shares, and who consumes it.
 
@@ -71,8 +66,6 @@ If no code or design is given, ask what the ISR does, what data it shares, and w
 - State the core and compiler assumptions behind any atomicity claim.
 - Save and restore `PRIMASK` (or `BASEPRI`) rather than blindly re-enabling interrupts, so critical sections nest.
 
-## Tips
+## Connectors
 
-1. **Share the handler and the consumer** together; races live in the pair, not in either alone.
-2. **Say which core**: atomicity and available instructions differ between M0/M0+ and M3 and up.
-3. **Measure** ISR time with a GPIO toggle or the cycle counter before trusting estimates.
+Optional (see `CONNECTORS.md`): when `~~source control`, `~~project tracker`, or `~~knowledge base` is connected, use it for diffs, tickets, and datasheets.

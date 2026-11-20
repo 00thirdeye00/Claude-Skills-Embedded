@@ -1,32 +1,15 @@
 ---
 name: stm32-bootloader-ota
-description: Design, implement, and debug STM32 bootloaders and firmware updates: flash layout, jumping from a bootloader to an application, the built-in system bootloader and DFU, image validation with CRC or signatures, A/B slots and rollback, and MCUboot integration with or without Zephyr. Use when planning a bootloader or OTA update, an application does not start after a bootloader jump, flash writes fail, or an update must survive power loss. Trigger with "STM32 bootloader", "jump to application", "OTA update", "MCUboot on STM32", "system memory bootloader", "DFU mode", "app crashes after bootloader jump", "VTOR offset".
+description: Design and debug an STM32 boot and update path: flash layout, bootloader handover, DFU, A/B slots with rollback, and MCUboot.
 argument-hint: "<update source (UART/USB/OTA), flash size and layout, security needs, or the failure>"
+disable-model-invocation: true
 ---
 
 # /stm32:stm32-bootloader-ota
 
 Plan and implement a safe boot and update path on STM32.
 
-## Usage
-
-```
-/stm32:stm32-bootloader-ota $ARGUMENTS
-```
-
 If details are missing, ask for the part number and flash organization, the update transport, whether images must be authenticated, whether rollback is required, and the RTOS.
-
-## How It Works
-
-```
-┌───────────────────────────────────────────────────────────┐
-│ 1 NEEDS    transport, security, rollback, flash budget     │
-│ 2 LAYOUT   bootloader, slots, config, alignment            │
-│ 3 BOOT     validate image, hand over cleanly               │
-│ 4 UPDATE   receive, write, verify, activate, confirm       │
-│ 5 TEST     power loss at every step, bad images, rollback  │
-└───────────────────────────────────────────────────────────┘
-```
 
 ## Steps
 
@@ -70,16 +53,6 @@ If details are missing, ask for the part number and flash organization, the upda
 - Never enable irreversible protection settings as part of this workflow without explicit user confirmation.
 - State flash timing and stall behavior assumptions, and where code must run from RAM.
 
-## If Connectors Available
+## Connectors
 
-If **~~source control** is connected:
-- Check the linker scripts and build configuration for slot offsets.
-
-If **~~knowledge base** is connected:
-- Look up the part's boot-mode application note and flash programming chapter.
-
-## Tips
-
-1. **After a jump, most failures are the vector table**: check `VTOR`, the application's link address, and the stack pointer value.
-2. **Deinitialize what the bootloader used** (tick, interrupts, clocks) before the jump.
-3. **Test the update path from the oldest shipped version.**
+Optional (see `CONNECTORS.md`): when `~~source control`, `~~project tracker`, or `~~knowledge base` is connected, use it for diffs, tickets, and datasheets.

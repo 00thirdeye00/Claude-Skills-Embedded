@@ -1,10 +1,24 @@
 {
   "name": "embedded-core",
-  "version": "0.2.0",
-  "description": "Platform-independent embedded systems skills: ISR and concurrency rules, RTOS concepts and schedulability, I2C/SPI/UART/CAN/USB protocol theory, and generic firmware review, debug, and release checklists. Companion to the stm32 plugin.",
-  "author": { "name": "Guru Mehar Rachaputi" },
+  "version": "0.4.0",
+  "description": "Platform-independent embedded skills, all started by you on demand: five workflows (ISR and concurrency, RTOS concepts, review, debug, release) and a bus-protocol reference.",
+  "author": {
+    "name": "Guru Mehar Rachaputi"
+  },
   "homepage": "https://github.com/00thirdeye00/Claude-Skills-Embedded",
   "repository": "https://github.com/00thirdeye00/Claude-Skills-Embedded",
   "license": "MIT",
-  "keywords": ["embedded", "firmware", "rtos", "interrupts", "i2c", "spi", "uart", "can", "usb", "review", "checklist"]
+  "keywords": [
+    "embedded",
+    "firmware",
+    "rtos",
+    "interrupts",
+    "i2c",
+    "spi",
+    "uart",
+    "can",
+    "usb",
+    "review",
+    "checklist"
+  ]
 }

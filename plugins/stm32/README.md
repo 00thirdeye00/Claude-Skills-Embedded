@@ -1,42 +1,57 @@
 # stm32 plugin
 
-Skills for developing STM32 firmware with Claude: debugging, design, code review, driver bring-up, low power, bootloaders and OTA updates, release checks, ten peripheral skills, and FreeRTOS and Zephyr integration, across STM32 families.
+Skills for developing STM32 firmware with Claude: design, code review, debugging, driver bring-up, low power, bootloaders and OTA updates, release checks, peripheral configuration, and FreeRTOS and Zephyr integration, across STM32 families.
 
-Companion plugin: `embedded-core` (platform-independent theory and checklists). Every skill here also carries enough inline guidance to work when `embedded-core` is not installed.
+Companion plugin: `embedded-core` (platform-independent checklists and theory). Everything here works without it.
 
-## Skills
+## Workflows and references
 
-| Group | Skill | Use for |
-|---|---|---|
-| Workflow | `stm32-design` | Part selection, clock tree, pin and DMA plan, memory map, interrupt priorities, budgets |
-| Workflow | `stm32-review` | STM32-specific code review: HAL/LL misuse, clocks, DMA and cache, priorities, flash and option bytes |
-| Workflow | `stm32-debug` | HardFault decoding, hangs, silent peripherals, HAL and RTOS pitfalls, debug versus standalone |
-| Workflow | `stm32-driver-bringup` | Datasheet to tested driver, bus port layering, bring-up order |
-| Workflow | `stm32-power` | Sleep, Stop, Standby, wake sources, tickless idle, current budget and measurement |
-| Workflow | `stm32-bootloader-ota` | System bootloader, DFU, custom bootloader handover, A/B slots, MCUboot |
-| Workflow | `stm32-release` | Option bytes, read-out protection policy, image checks, production programming |
-| Peripheral | `stm32-gpio-exti` | Pin modes, EXTI lines, debouncing, wake-up |
-| Peripheral | `stm32-uart` | Baud and clocks, DMA with idle line, errors, RS-485, LPUART |
-| Peripheral | `stm32-i2c` | Timing, transfers, errors, bus recovery, slave mode |
-| Peripheral | `stm32-spi` | Modes, prescaler, chip-select, DMA, slave mode |
-| Peripheral | `stm32-can` | bxCAN and FDCAN bit timing, filters, bus-off, CAN FD |
-| Peripheral | `stm32-usb` | Clock, VBUS and pull-up, CDC and other classes, enumeration failures |
-| Peripheral | `stm32-adc-dac` | Sampling time, calibration, reference, DMA, DAC waveforms |
-| Peripheral | `stm32-timers-pwm` | Prescaler and reload, PWM, dead time, capture, encoder |
-| Peripheral | `stm32-dma` | Request mapping, modes, memory reach, cache coherency |
-| Peripheral | `stm32-qspi-fmc` | Quad/Octo-SPI flash, memory-mapped mode, FMC SRAM and SDRAM |
-| RTOS | `stm32-freertos` | FreeRTOSConfig, interrupt priorities, HAL timebase, patterns, tickless idle |
-| RTOS | `stm32-zephyr` | West workflow, devicetree overlays, Kconfig, drivers, MCUboot |
+All skills are started by you with a command; none loads on its own (in Claude Code), so they add no tokens until you call them.
 
-Invoke a skill as `/stm32:<skill-name>` (for example `/stm32:stm32-debug`), or describe the problem and Claude loads the matching skill from its description.
+- **Workflow**: a fixed procedure that ends in a deliverable (brief, report, checklist). You give inputs; Claude follows the steps.
+- **Reference**: lookup knowledge for one topic. You name the topic and your settings or symptom; Claude loads one reference file and answers.
 
-## Structure
+### Workflows
 
-Each skill is a folder with a short `SKILL.md` and a `references/` folder whose files Claude loads only when needed. `stm32-debug`, for example, has references for fault-register decoding, common causes by symptom, and a family map.
+| Command | Use it when |
+|---|---|
+| `/stm32:stm32-design` | Starting a design or a board: part choice, clock tree, pins, DMA, memory, interrupt priorities, budgets |
+| `/stm32:stm32-debug` | A HardFault, a hang, a reset loop, a silent peripheral, or a debug-versus-standalone difference |
+| `/stm32:stm32-driver-bringup` | You must write a driver for a chip from its datasheet |
+| `/stm32:stm32-review` | You want STM32-specific review of code: HAL/LL use, clocks, DMA and cache, priorities, flash and option bytes |
+| `/stm32:stm32-power` | Battery life matters or sleep modes misbehave |
+| `/stm32:stm32-bootloader-ota` | You need a bootloader, DFU, A/B slots with rollback, or MCUboot |
+| `/stm32:stm32-release` | You are preparing a release or production programming and need to set protection |
+
+### References
+
+| Command | Covers |
+|---|---|
+| `/stm32:stm32-peripherals` | GPIO/EXTI, UART, I2C, SPI, CAN/FDCAN, USB, ADC/DAC, timers/PWM, DMA, QSPI/FMC (one reference loaded per use) |
+| `/stm32:stm32-rtos` | FreeRTOS (config, priorities, HAL timebase, patterns) and Zephyr (west, overlays, Kconfig) |
+
+## How to run them
+
+Type the command and your details in one message:
+
+```
+/stm32:stm32-debug CFSR=0x00000200 BFAR=0x40021000 stacked PC=0x08001A44
+/stm32:stm32-peripherals SPI DMA to a display at 20 MHz on an STM32H7
+```
+
+For several tasks, send one command per message in order, for example `stm32-design`, then `stm32-driver-bringup` for each chip, then `stm32-review`, then `stm32-release`. Claude cannot start these skills for you. For a full walk-through on a custom KiCad board, see `docs/custom-board-guide.md` in the repository root.
+
+## When to use it, when to skip it
+
+Skip it for quick questions and small boilerplate; plain Claude is cheaper. Use it when you want the fixed procedure and verified checklists: fault decoding, DMA and cache review, boot and update design, release checks. Use the `embedded-core` equivalents only for non-STM32 targets.
+
+## Token cost
+
+Nothing is loaded until you call a command. A command costs the skill body (about 400 to 1,300 tokens) plus one reference file (about 700 to 2,700 tokens). Figures are estimates.
 
 ## Accuracy
 
-Core-level facts (Arm architecture) are stated plainly. Family-level facts (register names, bit positions, errata, option-byte encodings, mode names) vary by part and silicon revision, so the skills tell Claude to flag them for verification against the reference manual, datasheet, and errata sheet. Treat generated code and numbers as drafts to verify on hardware.
+Arm architecture facts are stated plainly. Family-level facts (register names, bit positions, errata, option-byte encodings, mode names) vary by part and silicon revision, so the skills flag them for verification against the reference manual, datasheet, and errata sheet. Treat generated code and numbers as drafts to verify on hardware.
 
 ## Connectors
 

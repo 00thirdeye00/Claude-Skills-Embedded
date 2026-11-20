@@ -1,44 +1,15 @@
 ---
 name: stm32-debug
-description: Structured debugging for STM32 firmware — reproduce, isolate, diagnose, fix. Use when an STM32 project hits a HardFault, BusFault, UsageFault, or MemManage fault, hangs, resets in a loop, or lands in Default_Handler; when a peripheral does nothing (clock, pin-mux, DMA not firing, interrupt never arrives); when an RTOS task crashes or overflows its stack; or when behavior differs between debugger and standalone, debug and release builds, or STM32 families. Trigger with "HardFault", "CFSR", "stuck in Default_Handler", "DMA not working", "I2C hangs", "works under the debugger but not standalone", "FreeRTOS assert on interrupt priority".
+description: Debug STM32 firmware faults and hangs: HardFault/CFSR decoding, silent peripherals, DMA, HAL and RTOS pitfalls, debug-versus-standalone differences.
 argument-hint: "<symptom, fault register values, or stacked register dump>"
+disable-model-invocation: true
 ---
 
 # /stm32:stm32-debug
 
 Run a structured debugging session for STM32 firmware: reproduce, isolate, diagnose, fix.
 
-## Usage
-
-```
-/stm32:stm32-debug $ARGUMENTS
-```
-
 If no symptom is given, ask what the device does versus what it should do.
-
-## How It Works
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                         STM32 DEBUG                               │
-├─────────────────────────────────────────────────────────────────┤
-│  Step 1: IDENTIFY THE TARGET                                      │
-│  ✓ Family, core (M0/M0+, M3, M4, M7, M33), HAL/LL/bare-metal     │
-│  ✓ RTOS (FreeRTOS, Zephyr, none), build type, bootloader         │
-│                                                                    │
-│  Step 2: CLASSIFY THE SYMPTOM                                     │
-│  ✓ Fault, hang, silent peripheral, reset loop, debug-only bug    │
-│                                                                    │
-│  Step 3: CAPTURE EVIDENCE                                         │
-│  ✓ Fault registers, stacked PC/LR, SP, map file, raw values      │
-│                                                                    │
-│  Step 4: ISOLATE AND DIAGNOSE                                     │
-│  ✓ One hypothesis at a time, each with a confirming check        │
-│                                                                    │
-│  Step 5: FIX AND PREVENT                                          │
-│  ✓ Root cause, minimal fix, regression guard                     │
-└─────────────────────────────────────────────────────────────────┘
-```
 
 ## Step 1: Identify the target
 
@@ -122,22 +93,9 @@ Propose the smallest fix that addresses the root cause. State side effects and e
 - Distinguish core-level facts (Arm architecture, stable) from family-level facts (reference manual, errata). For family-level register names, bit positions, and peripheral behavior, tell the user to confirm against the reference manual, datasheet, and errata sheet for the exact part and silicon revision.
 - Never present a guess as the root cause. Say which check is still needed.
 - Keep the fault handler in the firmware after the fix; do not replace it with an empty loop.
+- Cortex-M0/M0+ parts (F0, G0, L0, C0) have no CFSR; use the Thumb-1 handler and the stacked PC.
+- For peripheral-specific causes use `stm32-peripherals`; for generic methods use `/embedded-core:embedded-debug`.
 
-## If Connectors Available
+## Connectors
 
-If **~~source control** is connected:
-- Identify recent commits and pull requests that touched the clock setup, linker script, interrupt handlers, or drivers involved.
-
-If **~~project tracker** is connected:
-- Search for related bug reports and create a ticket once the root cause is known.
-
-If **~~knowledge base** is connected:
-- Look up the reference manual excerpt, errata sheet, or team notes for the part in question.
-
-## Tips
-
-1. **Paste exact values**: hex register dumps beat descriptions.
-2. **Say what changed**: a new clock setting, library bump, or compiler flag is the top suspect.
-3. **Mention the family early**: Cortex-M0/M0+ parts (F0, G0, L0, C0) have no CFSR; the decoding path is different.
-4. **Note the debug context**: whether the failure happens only with or without a debugger attached narrows the search quickly.
-5. **Go deeper per peripheral**: use the matching `stm32-<peripheral>` skill (for example `stm32-i2c` or `stm32-dma`) once the failing peripheral is known. For platform-independent methods and instrumentation, use `/embedded-core:embedded-debug` if installed.
+Optional (see `CONNECTORS.md`): when `~~source control`, `~~project tracker`, or `~~knowledge base` is connected, use it for diffs, tickets, and datasheets.

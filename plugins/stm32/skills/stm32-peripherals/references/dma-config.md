@@ -11,6 +11,8 @@ DMA architecture differs significantly by family. Confirm all mappings and capab
 - Interrupts and flags
 - HAL pattern
 - Failure modes
+- Quick selection guide
+- Tips
 
 ## Architectures
 
@@ -74,3 +76,19 @@ Callback names depend on the peripheral and the HAL version. Check the DMA handl
 | Transfer error flag | Bad address, unreachable RAM, width or alignment violation | Check the buffer location and settings |
 | Corrupt data after a long run | Overrun in circular mode, slow consumer | Process each half in time; count overruns |
 | Two peripherals interfere | Request conflict on one stream | Remap to different streams or controllers |
+
+## Quick selection guide
+
+| Need | Use |
+|---|---|
+| Move a block once | Normal mode, completion interrupt |
+| Continuous sampling or reception | Circular mode with half and full callbacks |
+| Ping-pong without gaps | Double-buffer mode where supported, or circular with two halves |
+| Memory to memory | A controller that supports it (check the part), or a software copy |
+| Peripheral on a cached core | Non-cacheable buffer region, or explicit cache clean and invalidate |
+
+## Tips
+
+1. **Nothing happens**: the peripheral's own DMA enable bit, or the request mapping.
+2. **Data wrong on cached cores**: cache clean and invalidate, alignment to the cache line.
+3. **Transfer error flag**: wrong address region, unsupported width or alignment.

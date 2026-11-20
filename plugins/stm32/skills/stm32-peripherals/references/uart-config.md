@@ -11,6 +11,8 @@ HAL names are shown for orientation; confirm against your HAL version. Register 
 - Low-power UART
 - printf retargeting
 - Failure modes
+- Quick selection guide
+- Tips
 
 ## Baud rate and clock
 
@@ -70,3 +72,19 @@ Retargeting `_write` to a blocking UART transmit stalls the caller. In real-time
 | Duplicate or truncated frames | Misread DMA position, half-transfer callbacks confusing logic | Track the previous position; process only new bytes |
 | RS-485 last byte cut off | Driver released too early | Use transmission-complete |
 | Works at 9600, fails at 115200 | Baud error at the faster rate, clock error | Compute the error at each rate |
+
+## Quick selection guide
+
+| Situation | Use |
+|---|---|
+| Debug console, low rate | Polling or interrupt transmit |
+| Continuous receive of unknown-length frames | DMA circular receive with idle-line detection, or receive-to-idle in DMA mode |
+| Fixed-length frames | Interrupt or DMA receive of the exact length |
+| RS-485 half duplex | Hardware driver-enable if available; otherwise GPIO released on transmission complete |
+| Wake from Stop on a byte | Low-power UART with a wake-up source, kernel clock that runs in Stop |
+
+## Tips
+
+1. **Wrong baud** usually means the wrong kernel clock source or a wrong clock constant.
+2. **Garbage only at the start** often means a line glitch at power-up; resynchronize on a frame delimiter.
+3. **printf over UART** blocks; use a queue and a low-priority task in real-time code.

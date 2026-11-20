@@ -10,6 +10,8 @@ HAL names are shown for orientation; confirm against your HAL version. The I2C p
 - Bus recovery
 - Slave mode
 - Failure modes
+- Quick selection guide
+- Tips
 
 ## Peripheral generations
 
@@ -84,3 +86,18 @@ Set the own address, enable address-match interrupts, and use the HAL listen fun
 | Timeouts after a clock change | Timing register not regenerated | Recompute for the new kernel clock |
 | Corrupted reads | No repeated start where the device needs one, wrong register width | Compare transaction with the datasheet |
 | Hangs inside an interrupt-driven transfer | Missing timeout, callback not re-arming | Add timeouts; check callbacks and state |
+
+## Quick selection guide
+
+| Situation | Use |
+|---|---|
+| Register read of a sensor | Memory-read helper (register address then data) with a timeout |
+| Many small transactions in an RTOS | Interrupt or DMA with a completion semaphore; protect the bus with a mutex |
+| Bus stuck low | Bus-recovery routine, then peripheral re-initialization |
+| Act as a slave | Address-match interrupt, listen mode, handle stretching |
+
+## Tips
+
+1. **ACK but wrong data**: check register addresses, endianness, and repeated-start requirements.
+2. **Busy flag stuck** after an aborted transfer: run bus recovery.
+3. **Scope the rise time** before blaming firmware.

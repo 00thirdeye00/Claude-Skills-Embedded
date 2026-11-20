@@ -9,6 +9,8 @@ HAL names are shown for orientation; confirm against your HAL version. Register-
 - Debounce
 - Wake-up from low-power modes
 - Failure modes
+- Quick selection guide
+- Tips
 
 ## GPIO modes and settings
 
@@ -65,3 +67,19 @@ An EXTI line configured as interrupt or event can wake the device from Sleep and
 | Fires repeatedly | Pending flag not cleared, noisy or floating input, bounce | Clear the flag, add a pull, add debounce |
 | Wrong line fires | Shared vector not demultiplexed | Check which pending flag is set |
 | High current in sleep | Floating inputs, driven pins fighting external circuits | Set unused pins to analog; review external pull-ups |
+
+## Quick selection guide
+
+| Need | Use |
+|---|---|
+| Set or clear a pin from an ISR and the main loop without a race | Atomic set and reset register (bit set/reset), not read-modify-write on the output register |
+| Button input | Pull-up or pull-down, EXTI on the active edge, software debounce timer |
+| Drive an I2C-like bus line | Open-drain output with an external pull-up |
+| Lowest leakage for unused pins | Analog mode |
+| Wake from Stop | EXTI line enabled as interrupt or event; clear the wake flag |
+
+## Tips
+
+1. **Only one port per EXTI line number**: PA0 and PB0 cannot both use line 0.
+2. **Debounce** in software with a timer or in hardware with a filter; do not delay inside the ISR.
+3. **Keep SWD pins** free unless you accept losing the debugger.

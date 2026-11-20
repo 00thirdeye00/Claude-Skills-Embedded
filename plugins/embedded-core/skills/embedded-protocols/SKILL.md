@@ -1,20 +1,15 @@
 ---
 name: embedded-protocols
-description: Protocol theory, timing, electrical design, and failure modes for the buses used in embedded systems: I2C, SPI, UART/RS-485, CAN and CAN FD, and USB. Use when choosing a bus, sizing I2C pull-ups, picking SPI mode, computing UART baud error, setting CAN bit timing, designing USB descriptors, or diagnosing a bus that hangs, NACKs, drops frames, or will not enumerate. Trigger with "I2C pull-up value", "SPI mode", "UART baud rate error", "CAN bit timing", "USB not enumerating", "bus stuck low", "RS-485 direction".
-argument-hint: "<bus, devices and speeds, or the symptom you see on the wire>"
+description: Size, configure, and troubleshoot I2C, SPI, UART/RS-485, CAN/CAN FD, and USB buses on any MCU.
+argument-hint: "<bus, devices and speeds, or the symptom on the wire>"
+disable-model-invocation: true
 ---
 
 # /embedded-core:embedded-protocols
 
 Explain, choose, size, and troubleshoot embedded buses independent of the MCU vendor.
 
-## Usage
-
-```
-/embedded-core:embedded-protocols $ARGUMENTS
-```
-
-If the bus is not named, ask which bus, the devices on it, the speed, the cable length, and what is observed on the wire.
+If the bus is not named, ask which bus, the devices, the speed, the cable length, and what is seen on the wire.
 
 ## Workflow
 
@@ -67,9 +62,3 @@ If the bus is not named, ask which bus, the devices on it, the speed, the cable 
 - Give formulas and units, and say which values come from datasheets and must be confirmed.
 - Distinguish the protocol specification from vendor peripheral behavior.
 - When troubleshooting, ask for waveforms or captures before guessing.
-
-## Tips
-
-1. **Check the physical layer first**: pull-ups, termination, grounds, and levels explain many "protocol" bugs.
-2. **Decode, don't squint**: a logic analyzer with a protocol decoder shows address, data, and ACK at once.
-3. **Reduce speed** to separate timing problems from logic problems.

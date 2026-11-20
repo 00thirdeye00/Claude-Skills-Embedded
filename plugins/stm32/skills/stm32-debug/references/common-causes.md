@@ -80,7 +80,7 @@ Each item gives the check and the usual fix. Core-level behavior is stable; regi
 
 ## Bus-specific quick checks
 
-Deeper treatment is in the matching `stm32-<peripheral>` skill. First-pass checks:
+Deeper treatment is in the matching reference of `stm32-peripherals`. First-pass checks:
 
 - **I2C:** HAL expects the 7-bit address shifted left by one. Confirm pull-up values for the bus speed. A stuck bus is often a slave holding SDA low: toggle SCL up to nine times, issue a stop, and reset the peripheral. On families with a timing register, generate the value with the vendor tool or the reference-manual formulas.
 - **SPI:** CPOL and CPHA must match the slave; check NSS handling (hardware versus software NSS, master-mode fault if NSS is pulled low), baud divider against the slave's maximum clock, and frame size.

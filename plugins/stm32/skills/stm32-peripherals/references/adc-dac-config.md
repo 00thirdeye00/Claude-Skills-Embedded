@@ -12,6 +12,8 @@ ADC architecture, calibration, clocking, and channel features differ between fam
 - Noise reduction
 - DAC
 - Failure modes
+- Quick selection guide
+- Tips
 
 ## Accuracy model
 
@@ -90,3 +92,19 @@ Take the calibration addresses, temperatures, and supply voltage from the datash
 | Wrong temperature or supply value | Calibration voltage or sample time wrong | Use datasheet values and long sample times for internal channels |
 | DMA data stale or mismatched | Cache coherency, buffer layout misunderstanding | Invalidate cache; check the scan order |
 | Sample rate off | Timer clock or prescaler mistakes | Compute from the real timer clock |
+
+## Quick selection guide
+
+| Need | Use |
+|---|---|
+| Occasional reading | Single conversion, polled or interrupt |
+| Fixed-rate sampling | Timer trigger with DMA into a buffer, half and full callbacks |
+| Several channels | Scan sequence with DMA, one sample time per channel |
+| More resolution at low bandwidth | Hardware oversampling or averaging |
+| Absolute accuracy with a varying supply | Measure the internal reference and compute the supply voltage |
+
+## Tips
+
+1. **Noisy readings**: lengthen the sampling time, add a capacitor and a low-impedance buffer, and keep switching signals away.
+2. **Wrong readings after power-up**: run calibration and wait for the ADC to stabilize.
+3. **Channel crosstalk** happens with high-impedance sources in a scan; raise the sampling time.

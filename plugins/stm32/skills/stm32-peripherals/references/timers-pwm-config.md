@@ -11,6 +11,8 @@ Timer features, widths, and clock rules vary by family and instance. Check the r
 - Interrupts and DMA
 - Synchronization
 - Failure modes
+- Quick selection guide
+- Tips
 
 ## Frequency and resolution
 
@@ -67,3 +69,20 @@ Timers can trigger each other and the ADC through their trigger output, which al
 | Complementary outputs overlap | Dead time too small or not set | Set and verify dead time on a scope |
 | Counter overflows when capturing | 16-bit range exceeded | Count update events or use a 32-bit timer |
 | Output active after reset or halt | Idle state or debug-freeze behavior not configured | Configure idle states and debug freeze |
+
+## Quick selection guide
+
+| Need | Use |
+|---|---|
+| Periodic interrupt or time base | Update event with an interrupt |
+| PWM with glitch-free updates | Preload enabled on the auto-reload and compare registers |
+| Half-bridge or motor drive | Complementary outputs with dead time and a break input |
+| Measure pulse width or frequency | Input capture, with DMA for high rates |
+| Quadrature encoder | Encoder interface mode with input filtering |
+| Synchronize ADC sampling to PWM | Timer trigger output to the ADC |
+
+## Tips
+
+1. **No PWM output**: check the pin AF, the channel enable, and for advanced timers the main output enable.
+2. **Frequency off by a factor of two**: the timer clock doubling rule.
+3. **Duty glitches**: update compare values with preload enabled.

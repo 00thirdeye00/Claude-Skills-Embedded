@@ -1,32 +1,15 @@
 ---
 name: embedded-debug
-description: Platform-independent debugging method for firmware on any MCU: reproduce, instrument, isolate, diagnose, fix. Use when firmware misbehaves in ways that are intermittent, timing-dependent, or only on hardware, when choosing between GPIO toggling, logic analyzer, trace, cycle counter, watchpoints, or stack painting, or when a platform-specific skill is not available. Trigger with "intermittent bug", "works sometimes", "how do I measure this timing", "memory corruption", "find stack usage", "random reset", "how to debug without a debugger".
+description: Run a platform-independent firmware debugging session: reproduce, instrument, isolate, diagnose, and guard.
 argument-hint: "<symptom, when it happens, what has been tried>"
+disable-model-invocation: true
 ---
 
 # /embedded-core:embedded-debug
 
 Run a disciplined debugging session for firmware problems where the cause is not obvious.
 
-## Usage
-
-```
-/embedded-core:embedded-debug $ARGUMENTS
-```
-
 If no symptom is given, ask what happens, what should happen, how often, and what changed recently.
-
-## How It Works
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│ 1 REPRODUCE   make it happen on demand, note the conditions  │
-│ 2 OBSERVE     add instrumentation with minimal disturbance   │
-│ 3 ISOLATE     bisect code, hardware, configuration           │
-│ 4 DIAGNOSE    one hypothesis, one confirming check at a time │
-│ 5 FIX + GUARD fix the cause, add a regression check          │
-└──────────────────────────────────────────────────────────────┘
-```
 
 ## Steps
 
@@ -64,8 +47,6 @@ If no symptom is given, ask what happens, what should happen, how often, and wha
 - Distrust a fix that you cannot explain.
 - Prefer measurement over reasoning when timing is involved.
 
-## Tips
+## Connectors
 
-1. **A bug that vanishes when you add logging** is usually timing or a race; use a pin toggle instead.
-2. **Check power and reset first** for random resets: brown-out, watchdog, and noisy supplies look like software bugs.
-3. **Use the platform skill** (for example `/stm32:stm32-debug`) for fault-register decoding and family-specific causes.
+Optional (see `CONNECTORS.md`): when `~~source control`, `~~project tracker`, or `~~knowledge base` is connected, use it for diffs, tickets, and datasheets.

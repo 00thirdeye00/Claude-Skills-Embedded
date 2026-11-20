@@ -1,32 +1,15 @@
 ---
 name: stm32-power
-description: Design and debug low-power behavior on STM32: choose between Sleep, Stop, Standby, and Shutdown modes, select wake sources, restore clocks and peripherals after wake-up, handle the RTOS tick with tickless idle, estimate battery life, and find why measured current is too high. Use when battery life is a goal, when the device will not enter or wake from a low-power mode, or when current in sleep is higher than the datasheet. Trigger with "STM32 low power", "enter stop mode", "wakes up immediately", "won't wake from standby", "current too high in sleep", "battery life estimate", "tickless idle".
+description: Plan and debug STM32 low-power operation: mode choice, wake sources, tickless idle, current budget, and measurement.
 argument-hint: "<power goal or battery, active duty cycle, wake sources, or the symptom>"
+disable-model-invocation: true
 ---
 
 # /stm32:stm32-power
 
 Plan low-power operation and diagnose power problems on STM32 devices.
 
-## Usage
-
-```
-/stm32:stm32-power $ARGUMENTS
-```
-
 If details are missing, ask for the part number, supply and battery capacity, the active and idle time profile, required wake-up sources and latency, and whether an RTOS is used.
-
-## How It Works
-
-```
-┌──────────────────────────────────────────────────────────┐
-│ 1 PROFILE   active/idle timeline, wake needs, latency     │
-│ 2 MODE      pick the deepest mode that meets the needs    │
-│ 3 SEQUENCE  quiesce, arm wake, enter, restore             │
-│ 4 BUDGET    average current and battery life estimate     │
-│ 5 MEASURE   verify, then chase leakage and stray loads    │
-└──────────────────────────────────────────────────────────┘
-```
 
 ## Steps
 
@@ -65,8 +48,6 @@ If details are missing, ask for the part number, supply and battery capacity, th
 - State what is lost in each mode (registers, RAM, peripheral state) and how it is restored.
 - Never lock out the debugger without telling the user how to recover access.
 
-## Tips
+## Connectors
 
-1. **Pending interrupts** cause immediate wake; clear flags before entering.
-2. **Floating or driven pins** often dominate sleep current; set unused pins to analog and check external pull-ups and LEDs.
-3. **Debugger and probe circuits** add current; measure with them disconnected.
+Optional (see `CONNECTORS.md`): when `~~source control`, `~~project tracker`, or `~~knowledge base` is connected, use it for diffs, tickets, and datasheets.

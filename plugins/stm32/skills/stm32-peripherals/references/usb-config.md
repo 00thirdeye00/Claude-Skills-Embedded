@@ -10,6 +10,8 @@ Peripheral types, clock options, and middleware differ by family. Confirm in the
 - CDC notes
 - Low power and DFU
 - Failure modes
+- Quick selection guide
+- Tips
 
 ## Peripheral types
 
@@ -60,3 +62,19 @@ Interrupt priority: choose it consistent with RTOS rules if the stack calls RTOS
 | CDC stalls | Host not reading, busy handling absent, buffer too small | Add timeout and queue; check line-state handling |
 | Works on one OS only | Class-specific descriptor details | Compare with a known-good descriptor set |
 | Fails in low-power modes | USB clock stopped | Verify the clock source is kept or restarted |
+
+## Quick selection guide
+
+| Need | Use |
+|---|---|
+| Virtual serial port | CDC class with a transmit queue and busy handling |
+| Keyboard, mouse, custom reports | HID class with report descriptors |
+| File access | Mass-storage class over flash, SD, or RAM disk, with host-write handling |
+| Firmware update over USB | DFU class, or the built-in system bootloader if its DFU mode suffices |
+| Highest bandwidth | High-speed USB with an on-chip or external PHY and suitable RAM |
+
+## Tips
+
+1. **Not enumerating** usually means clock, D+ pull-up, descriptors, or stack start order.
+2. **Check the host log** (device manager or system log) for the enumeration step that failed.
+3. **Test replug and sleep/wake**; many bugs appear only there.

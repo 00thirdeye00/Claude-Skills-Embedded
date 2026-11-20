@@ -9,6 +9,8 @@ HAL names are shown for orientation; confirm against your HAL version. The SPI p
 - Transfer modes
 - Slave mode
 - Failure modes
+- Quick selection guide
+- Tips
 
 ## Timing and baud rate
 
@@ -56,3 +58,18 @@ Use hardware NSS or software NSS carefully; handle the first-byte preload proble
 | 16-bit data byte-swapped | Frame size versus byte order mismatch | Check the data size and DMA width |
 | Corrupt with DMA on cached cores | Cache coherency, alignment | Clean and invalidate; align buffers |
 | Master mode fault | Hardware NSS input pulled low | Use software NSS management in single-master designs |
+
+## Quick selection guide
+
+| Situation | Use |
+|---|---|
+| Short register access | Blocking transmit and receive with a timeout |
+| Bulk data, display, flash | DMA for both directions; release chip-select after the transfer and busy flag complete |
+| Many devices on one bus | One chip-select per device, mutex around the bus |
+| Act as a slave | Hardware or software NSS, interrupt or DMA, careful FIFO handling |
+
+## Tips
+
+1. **All 0xFF or 0x00** points to chip-select, mode, wiring, or a powered-down device.
+2. **Reduce the clock** to separate timing issues from logic bugs.
+3. **Set output speed** of the SPI pins high enough for the clock but no higher than needed.

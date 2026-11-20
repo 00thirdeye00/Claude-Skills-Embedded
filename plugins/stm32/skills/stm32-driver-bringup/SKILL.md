@@ -1,32 +1,15 @@
 ---
 name: stm32-driver-bringup
-description: Bring up a new peripheral or external-device driver on STM32 from the datasheet to a tested driver: extract the register map and init sequence, separate the bus layer from the device layer, handle errors and timeouts, and plan verification with a logic analyzer or loopback. Use when writing a driver for a sensor, display, memory, radio, or an on-chip peripheral, or porting a driver to STM32 HAL. Trigger with "write a driver for", "bring up this sensor", "port this driver to STM32", "datasheet to driver", "first communication with the chip", "WHO_AM_I fails".
+description: Take a device from datasheet to a tested STM32 driver: bus layering, init sequence, error handling, and a bring-up and test plan.
 argument-hint: "<device or peripheral, interface (I2C/SPI/UART/...), and the datasheet or register summary>"
+disable-model-invocation: true
 ---
 
 # /stm32:stm32-driver-bringup
 
 Take a device from datasheet to a working, testable driver on an STM32 target.
 
-## Usage
-
-```
-/stm32:stm32-driver-bringup $ARGUMENTS
-```
-
 If key facts are missing, ask for the device part number, the interface and speed, the STM32 part, the HAL or LL in use, and the datasheet or register map.
-
-## How It Works
-
-```
-┌──────────────────────────────────────────────────────────────┐
-│ 1 SPEC      electrical, bus, timing, registers, init sequence │
-│ 2 STRUCTURE bus port layer / device driver / application API  │
-│ 3 CODE      init, read, write, error handling                 │
-│ 4 BRING-UP  power, bus scan, ID read, then features           │
-│ 5 TEST      checklist and captures                            │
-└──────────────────────────────────────────────────────────────┘
-```
 
 ## Steps
 
@@ -68,8 +51,6 @@ If key facts are missing, ask for the device part number, the interface and spee
 - Keep HAL calls inside the port layer.
 - Use named constants for registers and fields.
 
-## Tips
+## Connectors
 
-1. **Read the ID register first**; if that fails, the bug is wiring, power, address, or bus settings, not the driver logic.
-2. **Capture the bus** with a logic analyzer and decode it before changing code.
-3. **Mind the address convention** (7-bit versus 8-bit) and the device's power-up delay.
+Optional (see `CONNECTORS.md`): when `~~source control`, `~~project tracker`, or `~~knowledge base` is connected, use it for diffs, tickets, and datasheets.

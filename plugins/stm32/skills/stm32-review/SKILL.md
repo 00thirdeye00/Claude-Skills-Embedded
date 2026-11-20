@@ -1,31 +1,15 @@
 ---
 name: stm32-review
-description: Review STM32 firmware for target-specific defects: wrong HAL or LL usage, missing clock enables, interrupt flag handling, DMA and cache coherency, interrupt priority and RTOS limits, flash and option-byte handling, linker script and startup problems, errata exposure, and power-mode mistakes. Use when reviewing STM32 code, a CubeMX-generated project, a driver, or a pull request for an STM32 target, before merging or releasing. Trigger with "review my STM32 code", "check this HAL driver", "is my DMA setup right", "review CubeMX project", "audit interrupt priorities".
+description: Review STM32 firmware for target-specific defects: HAL/LL use, clocks, interrupts, DMA and cache, RTOS limits, flash and option bytes.
 argument-hint: "<diff, files, project structure, or pull request URL>"
+disable-model-invocation: true
 ---
 
 # /stm32:stm32-review
 
 Review STM32 firmware for correctness, robustness, and STM32-specific pitfalls.
 
-## Usage
-
-```
-/stm32:stm32-review $ARGUMENTS
-```
-
 If no code is given, ask for the changed files, the exact part number, the HAL or LL version, the RTOS, and the clock configuration.
-
-## How It Works
-
-```
-┌───────────────────────────────────────────────────────────┐
-│ 1 CONTEXT    part, core, HAL/LL, RTOS, execution contexts │
-│ 2 GENERIC    embedded checklist (embedded-review)         │
-│ 3 STM32      references/stm32-review-checklist.md         │
-│ 4 REPORT     severity-ranked findings with fixes          │
-└───────────────────────────────────────────────────────────┘
-```
 
 ## Steps
 
@@ -61,16 +45,6 @@ If no code is given, ask for the changed files, the exact part number, the HAL o
 - For register-level or family-specific claims, say what must be confirmed in the reference manual or errata sheet for the exact part.
 - Do not rewrite generated files by hand; recommend changing the configuration or moving code into user sections.
 
-## If Connectors Available
+## Connectors
 
-If **~~source control** is connected:
-- Fetch the diff and comment on lines.
-
-If **~~project tracker** is connected:
-- File tickets for deferred findings.
-
-## Tips
-
-1. **Include the `.ioc` or equivalent** so clock and pin settings can be reviewed.
-2. **State the HAL version**; function behavior and names change between releases.
-3. **Provide the linker script** when memory placement or DMA buffers are involved.
+Optional (see `CONNECTORS.md`): when `~~source control`, `~~project tracker`, or `~~knowledge base` is connected, use it for diffs, tickets, and datasheets.

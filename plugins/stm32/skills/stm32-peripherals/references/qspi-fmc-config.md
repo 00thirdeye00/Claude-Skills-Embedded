@@ -9,6 +9,8 @@ Interface features differ by family (Quad-SPI, Octo-SPI, FSMC, FMC). Confirm tim
 - SDRAM initialization
 - Cache and MPU attributes
 - Failure modes
+- Quick selection guide
+- Tips
 
 ## Quad-SPI and Octo-SPI flash
 
@@ -64,3 +66,19 @@ On cores with caches, external memory regions need attributes through the MPU: m
 | Code in external flash crashes randomly | Erase or program running from the same flash, interrupt in mapped region during mode change | Move write code to internal memory; handle interrupts |
 | Parallel memory works slowly or fails | Timing too tight, data width mismatch | Relax the timings; check the width and address lines |
 | SDRAM corrupts over time | Refresh rate or initialization wrong | Recheck the initialization sequence and the refresh counter |
+
+## Quick selection guide
+
+| Need | Use |
+|---|---|
+| Initial bring-up and writes | Indirect mode with explicit commands |
+| Read-heavy data or code in external flash | Memory-mapped mode, with the read command, dummy cycles, and cache settings set |
+| Parallel SRAM, PSRAM, LCD | FMC with matched address-setup and data-setup timing |
+| Large RAM | SDRAM through FMC with the full initialization sequence and refresh rate |
+| Higher throughput | Quad or octal lines, higher clock, DMA |
+
+## Tips
+
+1. **ID reads work but data is wrong**: dummy cycles, sampling shift, or clock too high.
+2. **Memory-mapped reads fail** after reset if the memory is still in an unexpected mode; reset or re-enter the known mode in init.
+3. **Write operations** need write-enable commands and status polling.

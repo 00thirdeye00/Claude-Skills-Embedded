@@ -1,18 +1,13 @@
 ---
 name: embedded-rtos-concepts
-description: RTOS design concepts for any real-time operating system (FreeRTOS, Zephyr, ThreadX, RT-Thread): task decomposition, priority assignment, choosing queues, semaphores, mutexes, event flags, and task notifications, stack sizing, and schedulability analysis. Use when designing a task architecture, assigning priorities, choosing an IPC primitive, sizing stacks, diagnosing priority inversion, deadlock, or missed deadlines. Trigger with "how many tasks", "task priorities", "mutex vs semaphore", "queue or notification", "priority inversion", "will it meet deadlines", "stack size for task".
+description: Design or review an RTOS task architecture: tasks, priorities, IPC choice, stack sizing, and schedulability.
 argument-hint: "<system description, task list with periods and runtimes, or the problem>"
+disable-model-invocation: true
 ---
 
 # /embedded-core:embedded-rtos-concepts
 
 Design or review the task architecture of an RTOS-based system: tasks, priorities, communication, stack sizes, and timing guarantees.
-
-## Usage
-
-```
-/embedded-core:embedded-rtos-concepts $ARGUMENTS
-```
 
 If no system is described, ask for the activities the firmware must perform, their rates or deadlines, and the RTOS in use.
 
@@ -67,8 +62,6 @@ Primitive names differ between kernels; map the role, not the name.
 - State assumptions about execution times and mark them as estimates until measured.
 - Prefer static allocation of kernel objects over the heap in long-running firmware.
 
-## Tips
+## Connectors
 
-1. **Measure WCET** on target before trusting the analysis.
-2. **Watch the tick**: delays and timeouts have tick resolution, and a coarse tick adds jitter.
-3. **Give the idle task time**: a system with no idle time has no margin.
+Optional (see `CONNECTORS.md`): when `~~source control`, `~~project tracker`, or `~~knowledge base` is connected, use it for diffs, tickets, and datasheets.

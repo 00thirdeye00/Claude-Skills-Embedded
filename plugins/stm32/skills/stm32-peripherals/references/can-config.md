@@ -10,6 +10,8 @@ HAL names are shown for orientation; confirm against your HAL version. Controlle
 - Error handling
 - CAN FD
 - Failure modes
+- Quick selection guide
+- Tips
 
 ## Controller types
 
@@ -71,3 +73,19 @@ Select the frame format with bit-rate switching for a faster data phase. Configu
 | Lost frames | FIFO overrun | Increase servicing priority, use both FIFOs, filter earlier |
 | FD data corrupted | Data-phase rate too high, timing or delay compensation wrong | Lower the data rate, adjust timing |
 | Works on bench only | Ground offset, stubs, EMC | Check the wiring topology and the common-mode range |
+
+## Quick selection guide
+
+| Situation | Use |
+|---|---|
+| First bring-up without a bus | Loopback mode |
+| Observe a bus without disturbing it | Silent mode |
+| Accept a range of IDs | Mask or range filters, one bank per rule |
+| High message rates | Interrupt on FIFO pending, drain the FIFO in a high-priority task |
+| CAN FD with faster data phase | Separate data-phase timing and transmitter delay compensation |
+
+## Tips
+
+1. **No frames received** is nearly always filters or bit timing.
+2. **Bus-off** after the first transmit often means no other node acknowledges or the rate is wrong.
+3. **Use an analyzer** to compare the sample point and bit time.
