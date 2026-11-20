@@ -1,0 +1,19 @@
+{
+  "name": "embedded-skills",
+  "description": "Claude skills and plugins for embedded systems firmware development, starting with STM32.",
+  "owner": {
+    "name": "Guru Mehar Rachaputi"
+  },
+  "plugins": [
+    {
+      "name": "stm32",
+      "source": "./plugins/stm32",
+      "description": "STM32 firmware skills: debugging, design, review, driver bring-up, low power, bootloaders/OTA, release checks, ten peripheral skills, and FreeRTOS/Zephyr integration."
+    },
+    {
+      "name": "embedded-core",
+      "source": "./plugins/embedded-core",
+      "description": "Platform-independent embedded skills: ISR and concurrency rules, RTOS concepts, bus protocols (I2C, SPI, UART, CAN, USB), and generic review, debug, and release checklists."
+    }
+  ]
+}

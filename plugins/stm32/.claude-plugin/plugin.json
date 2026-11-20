@@ -1,0 +1,23 @@
+{
+  "name": "stm32",
+  "version": "0.4.0",
+  "description": "STM32 firmware skills, all started by you on demand: seven workflows (design, review, debug, driver bring-up, power, bootloader/OTA, release) and two references (peripherals, RTOS).",
+  "author": {
+    "name": "Guru Mehar Rachaputi"
+  },
+  "homepage": "https://github.com/00thirdeye00/Claude-Skills-Embedded",
+  "repository": "https://github.com/00thirdeye00/Claude-Skills-Embedded",
+  "license": "MIT",
+  "keywords": [
+    "stm32",
+    "embedded",
+    "firmware",
+    "arm",
+    "cortex-m",
+    "freertos",
+    "zephyr",
+    "hal",
+    "debugging",
+    "peripherals"
+  ]
+}
