@@ -1,0 +1,41 @@
+Archive member included to satisfy reference by file (symbol)
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+FLASH            0x0000000008000000 0x0000000000080000 xr
+RAM              0x0000000020000000 0x0000000000018000 xrw
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+.isr_vector     0x0000000008000000      0x188
+                0x0000000008000000                . = ALIGN (0x4)
+ *(.isr_vector)
+ .isr_vector    0x0000000008000000      0x188 build/startup_stm32f401xe.o
+                0x0000000008000000                g_pfnVectors
+                0x0000000008000188                . = ALIGN (0x4)
+
+.text           0x0000000008000188     0x1000
+ *(.text)
+ .text          0x0000000008000188      0x300 build/main.o
+                0x0000000008000188                main
+ .text.HAL_Init
+                0x0000000008000488      0xd00 build/stm32f4xx_hal.o
+                0x0000000008000488                HAL_Init
+ *(.text*)
+
+.data           0x0000000020000000       0x20 load address 0x0000000008001188
+ *(.data)
+ .data          0x0000000020000000       0x20 build/main.o
+
+.bss            0x0000000020000020      0x800
+ *(.bss)
+ .bss           0x0000000020000020      0x800 build/main.o
+
+._user_heap_stack
+                0x0000000020000820      0x600
+                0x0000000020000820                . = ALIGN (0x8)
+
+.comment        0x0000000000000000       0x45
+ .comment       0x0000000000000000       0x45 build/main.o

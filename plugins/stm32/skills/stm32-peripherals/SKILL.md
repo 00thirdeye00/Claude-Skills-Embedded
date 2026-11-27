@@ -1,6 +1,6 @@
 ---
 name: stm32-peripherals
-description: Set up or troubleshoot one STM32 peripheral: GPIO/EXTI, UART, I2C, SPI, CAN/FDCAN, USB, ADC/DAC, timers/PWM, DMA, QSPI/FMC.
+description: Set up or troubleshoot one STM32 peripheral: GPIO/EXTI, UART, I2C, SPI, CAN, USB, ADC/DAC, timers, DMA, QSPI/FMC, Ethernet, SD card, audio, display, RTC, watchdogs, CRC/RNG, OPAMP/COMP.
 argument-hint: "<peripheral, part, rates or modes, or the symptom>"
 disable-model-invocation: true
 ---
@@ -31,6 +31,14 @@ Configure or troubleshoot one STM32 peripheral at a time.
 | Timers, PWM | `references/timers-pwm-config.md` |
 | DMA | `references/dma-config.md` |
 | QSPI, OctoSPI, FMC | `references/qspi-fmc-config.md` |
+| Ethernet, LwIP | `references/ethernet-config.md` |
+| SD card (SDMMC), FatFS | `references/sdmmc-config.md` |
+| I2S, SAI audio | `references/i2s-sai-config.md` |
+| LTDC, DMA2D, displays | `references/ltdc-display-config.md` |
+| RTC, backup domain | `references/rtc-backup-config.md` |
+| IWDG, WWDG watchdogs | `references/watchdog-config.md` |
+| CRC unit, RNG | `references/crc-rng-config.md` |
+| OPAMP, comparators | `references/analog-opamp-comp-config.md` |
 
 ## Rules
 

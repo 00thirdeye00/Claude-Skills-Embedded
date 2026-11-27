@@ -1,7 +1,7 @@
 {
   "name": "embedded-core",
-  "version": "0.4.0",
-  "description": "Platform-independent embedded skills, all started by you on demand: five workflows (ISR and concurrency, RTOS concepts, review, debug, release) and a bus-protocol reference.",
+  "version": "0.7.0",
+  "description": "Platform-independent embedded skills, all started by you on demand: 6 workflows (orchestrator, ISR and concurrency, RTOS concepts, review, debug, release) and a bus-protocol reference. Companion to the stm32 plugin.",
   "author": {
     "name": "Guru Mehar Rachaputi"
   },

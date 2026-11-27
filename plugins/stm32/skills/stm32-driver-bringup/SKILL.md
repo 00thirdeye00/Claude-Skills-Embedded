@@ -17,7 +17,8 @@ If key facts are missing, ask for the device part number, the interface and spee
 2. **Design the layers** (see `references/driver-template.md`): a small bus port (read and write registers, delay) implemented with HAL calls, a device driver that depends only on the port, and an application-facing API. This keeps the driver portable and testable on a host.
 3. **Write the driver**: configuration structure, init, register access helpers, a status and error enum, timeouts on every wait, and a clear sequence for reset, identification, and configuration.
 4. **Plan the bring-up** in order of confidence: power and reset, bus signals on a scope or logic analyzer, device presence (ID register or ACK), a known register write and read-back, then features one at a time.
-5. **Give a test plan**: expected waveforms, expected register values, a loopback or known-input test, and failure-path tests (device absent, bus error).
+5. **Place it in the module layout**: if `docs/architecture/` exists, read the index and the bus owner's contract (not the code base), put the driver in `src/drivers/<chip>/` with one public header, claim its resources in the resource map without conflicts, and write a module contract from `../stm32-architecture/references/templates.md`.
+6. **Give a test plan**: expected waveforms, expected register values, a loopback or known-input test, and failure-path tests (device absent, bus error).
 
 ## Output
 
@@ -40,6 +41,9 @@ If key facts are missing, ask for the device part number, the interface and spee
 ### Test plan
 - [test, expected result]
 
+### Module contract and resources
+- [contract file, resources claimed, bus owner and lock]
+
 ### Open questions
 - [ambiguities to check against the datasheet]
 ```
@@ -49,6 +53,8 @@ If key facts are missing, ask for the device part number, the interface and spee
 - Never invent register addresses, bit fields, or timings; take them from the supplied datasheet or ask.
 - Include timeouts, return codes, and bus error recovery in the first version.
 - Keep HAL calls inside the port layer.
+- Never access a shared bus directly; go through its owner module.
+- After the driver is accepted, run `/stm32:stm32-architecture` (update) so the documents match.
 - Use named constants for registers and fields.
 
 ## Connectors
