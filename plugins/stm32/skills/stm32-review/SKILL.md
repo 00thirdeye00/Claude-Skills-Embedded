@@ -17,7 +17,8 @@ If no code is given, ask for the changed files, the exact part number, the HAL o
 2. **Apply the general checklist.** If the `embedded-core` plugin is installed, use `/embedded-core:embedded-review` for the platform-independent items; otherwise apply the summary in `references/stm32-review-checklist.md`.
 3. **Apply the STM32 checklist** to every file touched.
 4. **Separate generated from hand-written code.** Review hand-written code and user sections of generated code; for generated files, check settings, not style.
-5. **Report** using the template.
+5. **Check structure** when architecture documents exist: module boundaries and dependency direction, resource ownership, HAL calls outside the board support layer, and whether the contracts and the resource map were updated with the change. Optionally run `python ../stm32-architecture/scripts/check_architecture.py --arch docs/architecture/ARCHITECTURE.md --root . --src src Core`.
+6. **Report** using the template.
 
 ## Output
 
@@ -33,6 +34,9 @@ If no code is given, ask for the changed files, the exact part number, the HAL o
 
 ### Verified OK
 - [things checked and found correct]
+
+### Architecture and documents
+- [boundary or ownership violations, missing doc updates]
 
 ### Needs confirmation
 - [items requiring the reference manual, errata, or a measurement]

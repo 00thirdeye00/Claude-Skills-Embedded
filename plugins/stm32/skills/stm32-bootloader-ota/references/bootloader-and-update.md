@@ -105,3 +105,22 @@ MCUboot is an open-source secure bootloader. Images have a header and a signatur
 | Update bricks after power loss | Commit not atomic, slot overwritten in place | Redesign with staging and a flag record; test power loss at every step |
 | CRC mismatch on a good image | Host and device CRC parameters differ | Compare polynomial, initial value, reflection, and word order |
 | System bootloader entry fails | Boot pins or option bits wrong, read-out protection | Check boot configuration and protection level |
+
+## Worked example: slot arithmetic on non-uniform sectors
+
+Illustrative only. The sector sizes below match a common 512 KB single-bank layout (four 16 KB sectors, one 64 KB sector, three 128 KB sectors); confirm the real layout for your part in its reference manual, and confirm your bootloader's slot and scratch rules in its documentation before using any of it.
+
+| Sector | Size | Cumulative start offset |
+|---|---|---|
+| 0 to 3 | 16 KB each | 0, 16 KB, 32 KB, 48 KB |
+| 4 | 64 KB | 64 KB |
+| 5 to 7 | 128 KB each | 128 KB, 256 KB, 384 KB |
+
+Rules that drive the layout:
+
+1. Every region boundary (bootloader, slot, scratch, configuration) must fall on a sector boundary, because the unit of erase is a whole sector.
+2. A slot that must be swapped or overwritten needs its full sectors free; a 100 KB image in a slot made of two 128 KB sectors wastes 156 KB. Choose slot sizes from the sector map, not from the image size alone.
+3. Swap modes need a scratch area or spare sectors, and some require the primary and secondary slot to use sectors of matching size. On single-bank parts with large sectors this uses a large share of flash.
+4. The first sectors are small, so they suit the bootloader and configuration, while the large sectors suit application slots.
+
+One possible split to evaluate: bootloader in sectors 0 to 2 (48 KB), configuration in sector 3 (16 KB), a spare or scratch sector 4 (64 KB), and the application and update slots in sectors 5 and 6 (128 KB each), leaving sector 7 for a third use or future growth. This limits the application to 128 KB and requires an overwrite-style or direct-execute update mode with a staging slot; it is not a verified MCUboot configuration. Parts with two banks or uniform pages allow simpler layouts.

@@ -13,6 +13,7 @@ All skills are started by you with a command; none loads on its own (in Claude C
 
 | Command | Use it when |
 |---|---|
+| `/embedded-core:embedded-orchestrator` | You have a multi-stage goal on a non-STM32 MCU: it plans, waits for approval, runs the generic skills, and logs gaps (for STM32 use `/stm32:stm32-orchestrator`) |
 | `/embedded-core:embedded-isr-concurrency` | An ISR shares data with the main loop or a task, or you suspect a race |
 | `/embedded-core:embedded-rtos-concepts` | Designing tasks, priorities, IPC, stack sizes, or checking deadlines |
 | `/embedded-core:embedded-review` | Reviewing firmware for a non-STM32 target, or generic items |

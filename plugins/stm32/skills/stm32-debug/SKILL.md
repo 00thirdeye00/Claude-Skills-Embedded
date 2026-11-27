@@ -49,7 +49,7 @@ Ask for raw values, not paraphrases. Useful evidence:
 - Check section sizes and stack/heap placement with `arm-none-eabi-size` and the linker map file.
 - Peripheral register dumps taken at the point of failure, not after a reset.
 
-If the user pastes a fault dump or register values, decode them with the references first, then ask follow-up questions.
+If the user pastes a fault dump or register values, decode them with the references first, then ask follow-up questions. With Python available, `python scripts/decode_fault.py --cfsr 0x... --hfsr 0x... --bfar 0x... --pc 0x...` decodes the bits, classifies the addresses, and prints the `addr2line` command.
 
 ## Step 4: Isolate and diagnose
 

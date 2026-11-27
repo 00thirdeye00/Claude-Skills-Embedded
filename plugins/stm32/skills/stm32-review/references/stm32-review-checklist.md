@@ -11,6 +11,7 @@ Verify family-specific items against the reference manual, datasheet, and errata
 - RTOS integration
 - Flash, option bytes, and boot
 - Peripheral-specific
+- Structure and documents
 - Generic items summary
 
 ## Clocks and power
@@ -71,6 +72,14 @@ Verify family-specific items against the reference manual, datasheet, and errata
 - USB: 48 MHz clock accurate; interrupts serviced promptly; descriptors valid; low-power behavior defined.
 - ADC: calibration, sample time versus source impedance, reference voltage, and trigger configuration.
 - Timers: prescaler and reload computed with the real timer clock; preload settings; output enable for advanced timers.
+
+## Structure and documents
+- Dependencies point downward by layer; no upward or cyclic dependencies.
+- HAL and generated vendor headers are included only in the board support layer or a thin port file.
+- Each pin, DMA channel, interrupt priority, timer, bus, memory region, and task has one owner in the resource map.
+- A shared bus is accessed only through its owner module.
+- The module contract, dependency table, and resource map were updated in the same change.
+- Public headers state blocking behavior, allowed contexts, and error codes.
 
 ## Generic items summary
 Concurrency (shared data protection), memory safety (bounds, stack), error handling (every wait has a timeout), security (input validation, debug policy), and tooling (strict warnings, static analysis). Use `/embedded-core:embedded-review` from the `embedded-core` plugin for the full list.

@@ -1,7 +1,7 @@
 {
   "name": "stm32",
-  "version": "0.4.0",
-  "description": "STM32 firmware skills, all started by you on demand: seven workflows (design, review, debug, driver bring-up, power, bootloader/OTA, release) and two references (peripherals, RTOS).",
+  "version": "0.7.0",
+  "description": "STM32 firmware skills, all started by you on demand: 15 workflows (orchestrator, pin map, design, architecture, extend, CubeMX config, linker and startup, driver bring-up, testing, debug, power, bootloader/OTA, security, review, release) and 2 references (peripherals, RTOS).",
   "author": {
     "name": "Guru Mehar Rachaputi"
   },

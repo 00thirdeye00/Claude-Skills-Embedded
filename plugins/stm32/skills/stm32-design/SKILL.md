@@ -16,8 +16,10 @@ If requirements are thin, ask for the required peripherals and counts, data rate
 1. **Capture requirements** and turn them into numbers: instance counts per peripheral, throughput, latency, flash and RAM with growth margin, temperature range, supply.
 2. **Select the part** using `references/mcu-selection.md`. Offer a primary choice and an alternative, and state what would change the choice.
 3. **Plan clocks, pins, DMA, memory, and interrupts** using `references/pin-clock-dma-planning.md`. Resolve conflicts on paper before layout or CubeMX.
-4. **Budget** timing, CPU load, and current. Mark every estimate as an estimate.
-5. **List risks and verification steps**: items to confirm in the datasheet, reference manual, and errata sheet.
+4. **Break the design into modules** by layer (board support, drivers, services, application) with one owner per pin, peripheral, DMA channel, interrupt, timer, bus, memory region, and task. Use the layering rules in `../stm32-architecture/references/modularity-rules.md`.
+5. **Budget** timing, CPU load, and current. Mark every estimate as an estimate.
+6. **List risks and verification steps**: items to confirm in the datasheet, reference manual, and errata sheet.
+7. **After approval**, recommend `/stm32:stm32-architecture` to turn the module breakdown and resource map into the architecture documents.
 
 ## Output
 
@@ -47,6 +49,10 @@ If requirements are thin, ask for the required peripherals and counts, data rate
 | Priority | Sources | Rationale |
 |---|---|---|
 
+### Module breakdown
+| Module | Layer | Purpose | Depends on | Owns (pins, DMA, IRQs, timers, bus, memory, tasks) |
+|---|---|---|---|---|
+
 ### Budgets
 - CPU load: [..]; worst-case latency: [..]; current: [..]
 
@@ -60,6 +66,7 @@ If requirements are thin, ask for the required peripherals and counts, data rate
 - Reserve debug pins, reset, boot, and oscillator pins before allocating the rest.
 - State which choices are fixed by silicon (for example which DMA can reach which RAM) and which are flexible.
 - Flag any assumption about a specific part number that you have not verified.
+- Every limited resource has exactly one owner module in the breakdown; if two modules need one, say how access is shared.
 
 ## Connectors
 
